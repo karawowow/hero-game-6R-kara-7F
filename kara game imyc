@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6R Hero Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            color: #008080;
+        }
+        .game-area {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .bin {
+            width: 150px;
+            height: 150px;
+            border: 3px solid #008080;
+            border-radius: 10px;
+            background-color: #e0ffff;
+            text-align: center;
+            padding-top: 50px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .item {
+            width: 100px;
+            margin: 10px;
+            padding: 10px;
+            border: 2px solid #666;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: inline-block;
+            cursor: grab;
+        }
+    </style>
+</head>
+<body>
+    <h1>6R Hero Challenge</h1>
+    <p>Drag and drop items into the correct bins!</p>
+    <div id="items">
+        <div class="item" draggable="true" ondragstart="drag(event)" id="item1">Plastic Bottle</div>
+        <div class="item" draggable="true" ondragstart="drag(event)" id="item2">Old Clothes</div>
+        <div class="item" draggable="true" ondragstart="drag(event)" id="item3">Broken Phone</div>
+        <div class="item" draggable="true" ondragstart="drag(event)" id="item4">Food Waste</div>
+        <div class="item" draggable="true" ondragstart="drag(event)" id="item5">Unnecessary Packaging</div>
+    </div>
+    <div class="game-area">
+        <div class="bin" ondrop="drop(event)" ondragover="allowDrop(event)" id="bin1">Recycle</div>
+        <div class="bin" ondrop="drop(event)" ondragover="allowDrop(event)" id="bin2">Reuse</div>
+        <div class="bin" ondrop="drop(event)" ondragover="allowDrop(event)" id="bin3">Repair</div>
+    </div>
+    <div id="score" style="margin-top: 20px; font-size: 20px; color: #008000;"></div>
+
+    <script>
+        let score = 0;
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const itemId = event.dataTransfer.getData("text");
+            const binId = event.target.id;
+
+            if (
+                (itemId === "item1" && binId === "bin1") || // Plastic Bottle -> Recycle
+                (itemId === "item2" && binId === "bin2") || // Old Clothes -> Reuse
+                (itemId === "item3" && binId === "bin3")    // Broken Phone -> Repair
+            ) {
+                document.getElementById(itemId).remove();
+                score += 10;
+                document.getElementById("score").innerText = `Score: ${score}`;
+            } else {
+                score -= 5;
+                document.getElementById("score").innerText = `Score: ${score}`;
+            }
+        }
+    </script>
+</body>
+</html>
